@@ -60,5 +60,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>&quot;Bluetooth Scanner requires access to your device&apos;s bluetooth services.&quot;</string>
 </dict>
 </plist>
