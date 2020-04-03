@@ -27,6 +27,7 @@ class BluetoothManager: NSObject {
   
   var centralManager: CBCentralManager!
   var peripherals: [Peripheral] = []
+  var txPower: Double?
   
   var delegate: BluetoothManagerDelegate?
   
@@ -39,11 +40,24 @@ class BluetoothManager: NSObject {
   
   func startScan() {
     peripherals = []
+    getConnectedPeriperals()
     centralManager.scanForPeripherals(withServices: nil, options: nil)
   }
   
   func stopScan() {
     centralManager.stopScan()
+    
+  }
+  
+  func getConnectedPeriperals() {
+    
+    //guard let uuid = CBUUID(string: "00000000-0000-1000-8000-00805F9B34FB") else { return }
+    
+    var connected = centralManager.retrieveConnectedPeripherals(withServices: [CBUUID(string: "0x1800")])
+    
+    for peripheral in connected {
+      print("connected yoyo \(peripheral)")
+    }
   }
   
   func getDevices() -> [Device] {
@@ -51,7 +65,7 @@ class BluetoothManager: NSObject {
     var devices: [Device] = []
     
     for peripheral in peripherals {
-      devices.append(Device(id: peripheral.peripheral.identifier, name: peripheral.peripheral.name ?? "unknown", rssi: peripheral.rssi))
+      devices.append(Device(id: peripheral.peripheral.identifier, name: peripheral.peripheral.name ?? "unknown", rssi: Int(peripheral.rssi), isTracking: nil, givenName: nil, location: nil, user_id: nil))
     }
     
     return devices
@@ -80,12 +94,21 @@ extension BluetoothManager: CBCentralManagerDelegate {
     }
   }
   
+  
+  
   func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
     
     print(peripheral)
     print(advertisementData)
     print(RSSI)
     
+    if let power = advertisementData[CBAdvertisementDataTxPowerLevelKey] as? Double {
+      self.txPower = power
+    }
+    
+    if let txPower = self.txPower {
+      print("Distance is ", pow(10, ((txPower - Double(truncating: RSSI))/20)))
+    }
     
     let _peripheral = Peripheral(peripheral: peripheral, rssi: RSSI)
     

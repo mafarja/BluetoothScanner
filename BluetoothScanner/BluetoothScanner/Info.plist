@@ -17,9 +17,17 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>"Bluetooth Scanner requires access to your device's bluetooth services."</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>"Bluetooth Scanner requires access to your device's bluetooth services."</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>"Bluetooth Scanner will use your location to help you find your devices on a map"</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>"Bluetooth Scanner will use your location to help you find your devices on a map"</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -60,7 +68,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>&quot;Bluetooth Scanner requires access to your device&apos;s bluetooth services.&quot;</string>
 </dict>
 </plist>

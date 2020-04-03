@@ -9,29 +9,40 @@
 import Foundation
 
 class DeviceScannerViewModel {
-  let deviceManager = DeviceManager()
-  var deviceViewModels: Observable<[DeviceViewModel]> = Observable<[DeviceViewModel]>([])
+  let deviceManager = DeviceManager.shared
+  var deviceScannerCellViewModels: Observable<[DeviceScannerCellViewModel]> = Observable<[DeviceScannerCellViewModel]>([])
   
   init() {
     registerModelObservers()
   }
   
   private func registerModelObservers() {
-    self.deviceManager.devices.addObserver(self, options: [.initial, .new]) { devices, change in
+  
+    self.deviceManager.scannedDevices.addObserver(self, options: [.initial, .new]) { devices, change in
       
       self.loadDeviceViewModels(devices: devices)
       
     }
+    
+    
+    
+    
+    
   }
   
   private func loadDeviceViewModels(devices: [Device]) {
     
-    var deviceViewModelsArr: [DeviceViewModel] = []
+    var deviceViewModelsArr: [DeviceScannerCellViewModel] = []
+    var unknownArr: [DeviceScannerCellViewModel] = []
     for device in devices {
-      deviceViewModelsArr.append(DeviceViewModel(device: device))
+      if device.name == "unknown" {
+        unknownArr.append(DeviceScannerCellViewModel(device: device))
+        continue
+      }
+      deviceViewModelsArr.append(DeviceScannerCellViewModel(device: device))
     }
-    
-    self.deviceViewModels.value = deviceViewModelsArr
+    deviceViewModelsArr.append(contentsOf: unknownArr)
+    self.deviceScannerCellViewModels.value = deviceViewModelsArr
     
   }
   
@@ -42,5 +53,7 @@ class DeviceScannerViewModel {
   func stopScan() {
     deviceManager.stopScan()
   }
+  
+  
   
 }
